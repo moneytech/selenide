@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,6 +123,11 @@ public class SelenideFieldDecorator extends DefaultFieldDecorator {
     Type genericType = field.getGenericType();
     if (!(genericType instanceof ParameterizedType)) return null;
 
-    return (Class<?>) ((ParameterizedType) genericType).getActualTypeArguments()[0];
+    Type[] actualTypeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
+    Type firstArgument = actualTypeArguments[0];
+    if (firstArgument instanceof TypeVariable) {
+      return (Class<?>) ((TypeVariable<?>) actualTypeArguments[0]).getGenericDeclaration();
+    }
+    return (Class<?>) firstArgument;
   }
 }
