@@ -20,7 +20,7 @@ public class FieldOfGenericTypeTest extends IntegrationTest {
   }
 
   @Test
-  void name() {
+  void injectsFoundSelenideElementAsSelf() {
     DummyPage page = page(DummyPage.class);
     assertThat(page.body.selects).hasSize(3);
     assertThat(page.body.selects.get(0)).isInstanceOf(ElementsContainer.class);

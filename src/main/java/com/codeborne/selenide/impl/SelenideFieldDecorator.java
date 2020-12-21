@@ -12,6 +12,8 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.DefaultFieldDecorator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -28,6 +30,7 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 public class SelenideFieldDecorator extends DefaultFieldDecorator {
+  private static final Logger logger = LoggerFactory.getLogger(SelenideFieldDecorator.class);
   private final SelenidePageFactory pageFactory;
   private final Driver driver;
   private final SearchContext searchContext;
@@ -44,7 +47,13 @@ public class SelenideFieldDecorator extends DefaultFieldDecorator {
   @Nullable
   public Object decorate(ClassLoader loader, Field field) {
     if (ElementsContainer.class.equals(field.getDeclaringClass()) && "self".equals(field.getName())) {
-      return searchContext;
+      if (searchContext instanceof SelenideElement) {
+        return searchContext;
+      }
+      else {
+        logger.warn("Cannot initialize field {}", field);
+        return null;
+      }
     }
     By selector = new Annotations(field).buildBy();
     if (WebElement.class.isAssignableFrom(field.getType())) {
