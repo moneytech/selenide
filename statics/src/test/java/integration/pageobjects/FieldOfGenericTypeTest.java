@@ -21,12 +21,19 @@ public class FieldOfGenericTypeTest extends IntegrationTest {
 
   @Test
   void injectsFoundSelenideElementAsSelf() {
-    DummyPage page = page(DummyPage.class);
-    assertThat(page.body.selects).hasSize(3);
-    assertThat(page.body.selects.get(0)).isInstanceOf(ElementsContainer.class);
-    assertThat(((ElementsContainer) page.body.selects.get(0)).getSelf()).isEqualTo($("select[name=domain]"));
-    assertThat(((ElementsContainer) page.body.selects.get(1)).getSelf()).isEqualTo($("select#hero"));
-    assertThat(((ElementsContainer) page.body.selects.get(2)).getSelf()).isEqualTo($("select#gender"));
+    try {
+      DummyPage page = page(DummyPage.class);
+      assertThat(page.body.selects).hasSize(3);
+      assertThat(page.body.selects.get(0)).isInstanceOf(ElementsContainer.class);
+      assertThat(((ElementsContainer) page.body.selects.get(0)).getSelf()).isEqualTo($("select[name=domain]"));
+      assertThat(((ElementsContainer) page.body.selects.get(1)).getSelf()).isEqualTo($("select#hero"));
+      assertThat(((ElementsContainer) page.body.selects.get(2)).getSelf()).isEqualTo($("select#gender"));
+    }
+    catch (Throwable e) {
+      e.printStackTrace();
+      e.printStackTrace(System.out);
+      throw e;
+    }
   }
 
   static class DummyTypedElement<T> extends ElementsContainer {
