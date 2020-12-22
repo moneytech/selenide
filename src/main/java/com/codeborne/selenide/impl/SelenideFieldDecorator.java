@@ -135,8 +135,12 @@ public class SelenideFieldDecorator extends DefaultFieldDecorator {
     Type[] actualTypeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
     Type firstArgument = actualTypeArguments[0];
     if (firstArgument instanceof TypeVariable) {
-      return (Class<?>) ((TypeVariable<?>) actualTypeArguments[0]).getGenericDeclaration();
+       Class<?> result = (Class<?>) ((TypeVariable<?>) actualTypeArguments[0]).getGenericDeclaration();
+      logger.info("field {} -> type {}", field, result);
+      return result;
     }
+
+    logger.info("field {} -> type {}", field, firstArgument);
     return (Class<?>) firstArgument;
   }
 }
