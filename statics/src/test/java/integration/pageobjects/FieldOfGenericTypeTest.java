@@ -21,6 +21,8 @@ public class FieldOfGenericTypeTest extends IntegrationTest {
 
   @Test
   void injectsFoundSelenideElementAsSelf() {
+    System.out.println("*** SYSTEM PROPERTIES *** " + System.getProperty("java.version"));
+    System.out.println(System.getProperties());
     try {
       DummyPage page = page(DummyPage.class);
       assertThat(page.body.selects).hasSize(3);
@@ -30,7 +32,7 @@ public class FieldOfGenericTypeTest extends IntegrationTest {
       assertThat(((ElementsContainer) page.body.selects.get(2)).getSelf()).isEqualTo($("select#gender"));
     }
     catch (Throwable e) {
-      e.printStackTrace();
+      System.out.println("*** THE ERROR ***");
       e.printStackTrace(System.out);
       throw e;
     }
